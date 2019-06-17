@@ -32,7 +32,9 @@
   },
   "homepage": "https://koenkk.github.io/zigbee2mqtt",
   "dependencies": {
+    "alibabacloud-iot-device-sdk": "^1.2.5",
     "debounce": "*",
+    "deep-diff": "*",
     "git-last-commit": "*",
     "js-yaml": "*",
     "mkdir-recursive": "*",
@@ -47,7 +49,6 @@
     "ziee": "*",
     "zigbee-shepherd": "git+https://github.com/Koenkk/zigbee-shepherd.git#566cba295119cb334a7a7d939b4741e59415ed80",
     "zigbee-shepherd-converters": "9.0.5",
-    "deep-diff": "*",
     "zive": "*"
   },
   "devDependencies": {
