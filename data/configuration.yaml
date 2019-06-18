@@ -1,10 +1,10 @@
 homeassistant: false
-permit_join: false
+permit_join: true
 mqtt:
   base_topic: zigbee2mqtt
   server: 'mqtt://localhost'
 serial:
-  port: /dev/ttys001
+  port: COM4
 devices:
   '0x00158d0003654332':
     friendly_name: '0x00158d0003654332'

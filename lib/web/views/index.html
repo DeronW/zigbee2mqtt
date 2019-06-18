@@ -73,12 +73,12 @@
                 $(".zigbee-closed").show();
             }
             function test1() {
-                $.get("/control?topic=a", function(data) {
+                $.get("/test1", function(data) {
                     console.log("enable", data);
                 });
             }
             function test2() {
-                $.get("/control", function(data) {
+                $.get("/test2", function(data) {
                     console.log("enable", data);
                 });
             }
@@ -126,8 +126,8 @@
                         </button>
                     </div>
                     <br />
-                    <button class="btn btn-primary" onClick="test1()">TEST 1</button>
-                    <button class="btn btn-primary" onClick="test2()">TEST 2</button>
+                    <button class="btn btn-primary" onClick="test1()">TEST 1 Off</button>
+                    <button class="btn btn-primary" onClick="test2()">TEST 2 On</button>
                 </div>
                 <div class="col">
                     <button disabled class="btn">设备列表</button>
