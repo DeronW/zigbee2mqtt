@@ -1,0 +1,139 @@
+<html>
+    <head>
+        <title>幻腾智能</title>
+        <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <style>
+            .header {
+                background: #343a40;
+            }
+            .datetime {
+                color: white;
+            }
+            .zigbee-opened,
+            .zigbee-closed {
+                display: none;
+            }
+        </style>
+        <script src="/static/jquery-1.12.4.min.js"></script>
+        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+        <script>
+            $(function() {
+                refresh();
+                startRefresh();
+                startTimer();
+            });
+
+            function startTimer() {
+                setInterval(() => {
+                    // let d= new Date(),
+                    //  t = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${}`
+                    $("#datetime").text(new Date());
+                }, 1000);
+            }
+
+            function startRefresh() {
+                setInterval(() => {
+                    refresh();
+                }, 15000);
+            }
+
+            function refresh() {
+                $.get("/status", function(data) {
+                    let { permit_join, devices } = data;
+                    permit_join ? showEnablePairing() : showDisablePairing();
+
+                    $("#devices").html("");
+                    Object.keys(devices).forEach(k => {
+                        let { friendly_name } = devices[k];
+                        $("#devices").append(`
+                            <li class="list-group-item">
+                                ${friendly_name}
+                                <span class="badge badge-primary badge-pill">14</span>
+                            </li>
+                        `);
+                    });
+                });
+            }
+
+            let enablePairing = false;
+            function toggleZigbeePairing() {
+                $.get("/settings", { permit_join: !enablePairing }, function(data) {
+                    console.log("enable", data);
+                });
+                enablePairing ? showDisablePairing() : showEnablePairing();
+            }
+            function showEnablePairing() {
+                enablePairing = true;
+                $(".zigbee-opened").show();
+                $(".zigbee-closed").hide();
+            }
+            function showDisablePairing() {
+                enablePairing = false;
+                $(".zigbee-opened").hide();
+                $(".zigbee-closed").show();
+            }
+            function test1() {
+                $.get("/control?topic=a", function(data) {
+                    console.log("enable", data);
+                });
+            }
+            function test2() {
+                $.get("/control", function(data) {
+                    console.log("enable", data);
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">
+                <img
+                    src="data:image/png;base64,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"
+                />
+            </a>
+            <div class="datetime" id="datetime"></div>
+        </nav>
+
+        <div class="container">
+            <br />
+            <div class="row">
+                <div class="col">
+                    <div class="zigbee-opened">
+                        幻腾 Zigbee 网关
+                        <span class="badge badge-success">已开启</span>
+                    </div>
+                    <div class="zigbee-closed">
+                        幻腾 Zigbee 网关
+                        <span class="badge badge-dark">已关闭</span>
+                    </div>
+                    <br />
+                    <div class="zigbee-closed">
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            onClick="toggleZigbeePairing()"
+                        >
+                            开启
+                        </button>
+                    </div>
+                    <div class="zigbee-opened">
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            onClick="toggleZigbeePairing()"
+                        >
+                            关闭
+                        </button>
+                    </div>
+                    <br />
+                    <button class="btn btn-primary" onClick="test1()">TEST 1</button>
+                    <button class="btn btn-primary" onClick="test2()">TEST 2</button>
+                </div>
+                <div class="col">
+                    <button disabled class="btn">设备列表</button>
+                    <ul class="list-group" id="devices"></ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
